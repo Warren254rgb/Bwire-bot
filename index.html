@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BWIRE BOT</title>
+<style>
+body{background:#0a0a0a;color:white;font-family:Arial;text-align:center;padding:20px}
+h1{color:#FFD700;font-size:32px}
+.box{background:#1a1a1a;border:2px solid #FFD700;border-radius:15px;padding:20px;margin:15px 0}
+input,select{width:90%;padding:14px;margin:8px 0;border-radius:10px;border:1px solid #444;background:#222;color:white;font-size:16px}
+button{background:#FFD700;color:black;font-weight:bold;font-size:20px;padding:15px 30px;border:none;border-radius:12px;width:95%;margin-top:10px}
+label{color:#FFD700;font-weight:bold}
+</style>
+</head>
+<body>
+<h1>BWIRE BOT</h1>
+<p id="modeText">JustMarkets Demo - Gold / XAUUSD</p>
+<div class="box">
+<p>Status: <span id="status">Ready</span></p>
+<label>Account Type</label><br>
+<select id="accountType" onchange="changeMode()"><option value="Demo">DEMO - Practice Money</option><option value="Real">REAL - Real Money</option></select><br>
+<label>MT5 Login</label><br>
+<input id="login" placeholder="Enter MT5 Login"><br>
+<label>MT5 Password</label><br>
+<input id="pass" type="password" placeholder="Enter MT5 Password"><br>
+<label>GitHub Token</label><br>
+<input id="token" placeholder="ghp_... paste here"><br>
+<label>Pair</label><br>
+<select id="pair"><option>XAUUSD</option><option>EURUSD</option><option>GBPUSD</option></select><br><br>
+<label>Lot Size</label><br>
+<select id="lot"><option>0.01</option><option>0.02</option><option>0.05</option><option>0.10</option></select><br>
+<button onclick="startBot()">▶ START BOT</button>
+</div>
+<script>
+function changeMode(){let t=document.getElementById('accountType').value;document.getElementById('modeText').innerText=t=='Real'?'⚠️ JustMarkets REAL - Real Money!':'JustMarkets Demo - Gold / XAUUSD';}
+function startBot(){let login=document.getElementById('login').value;let pass=document.getElementById('pass').value;let token=document.getElementById('token').value;let type=document.getElementById('accountType').value;if(!login||!pass||!token){alert('Fill Login, Password and Token');return;}if(type=='Real'&&!confirm('You chose REAL MONEY. Are you sure?')){return;}document.getElementById('status').innerText='Starting '+type+'...';fetch('https://api.github.com/repos/Warren254rgb/Bwire-bot/actions/workflows/bot.yml/dispatches',{method:'POST',headers:{'Authorization':'Bearer '+token,'Accept':'application/vnd.github+json'},body:JSON.stringify({ref:'main',inputs:{login:login,account_type:type}})}) .then(r=>{if(r.ok){document.getElementById('status').innerText='✅ '+type+' Bot Started!';}else{document.getElementById('status').innerText='Error - Check Token';}}).catch(e=>{document.getElementById('status').innerText='Error: '+e;});}
+</script>
+</body>
+  </html>
