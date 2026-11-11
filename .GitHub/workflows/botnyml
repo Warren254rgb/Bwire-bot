@@ -1,0 +1,23 @@
+name: bot
+
+on:
+  workflow_dispatch:
+    inputs:
+      login:
+        description: 'MT5 Login'
+        required: false
+        default: ''
+      account_type:
+        description: 'Account Type'
+        required: false
+        default: 'demo'
+
+jobs:
+  run-bot:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run Bwire Bot
+        run: |
+          echo "Starting Bwire Bot for login ${{ github.event.inputs.login }} account ${{ github.event.inputs.account_type }}"
+          echo "Bot started successfully"
